@@ -16,7 +16,7 @@ Una vez descargado este repositorio...
 
 ### 📄 Descargar el repositorio de nuestra API:
 
-Debemos ingresar y descargar el repositorio del BackEnd haciendo [▶️Click Aquí◀️]([https://www.ejemplo.com](https://github.com/EP-UnaHur-2025C2/anti-social-documental-grupo1))
+Debemos ingresar y descargar el repositorio del BackEnd haciendo [▶️Click Aquí◀️](https://www.ejemplo.com](https://github.com/EP-UnaHur-2025C2/anti-social-documental-grupo1)
 
 ‼️IMPORTANTE tener instalado Docker, si no lo tenés, lo podés descargar desde el siguiente link:
 https://docs.docker.com/desktop/setup/install/windows-install/
