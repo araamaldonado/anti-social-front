@@ -1,52 +1,67 @@
-# UNAHUR Anti-Social Red:
+# Anti-Social Front-End
 
-## ✨ Descripción del proyecto
+Front-end de la aplicación **Anti-Social**, desarrollado con **React + TypeScript + Vite**. Esta interfaz consume la API backend construida con **MongoDB (docker), Express y Mongoose**, para mostrar y permitir la interacción con usuarios, publicaciones y comentarios de una red social básica.
 
-En este proyecto desarrollamos el Front End de la UNAHUR Anti-Social Red usando la API de nuestro trabajo de la materia "Estrategias de Persistencia", desarrollado con MongoDB y Mongoose junto con Docker y Express.
+---
 
-## 🌐 Tecnologias usadas en este proyecto
+## 📌 Descripción del proyecto
 
-- React-Vite
-- TypeScript
-- Framework CSS: Bootstrap
+Interfaz de usuario responsiva y moderna para la red social **Anti-Social**, construida con React y TypeScript.  
+Se conecta a la API REST creada en el proyecto de backend con **MongoDB dockerizado**, consumiendo datos y permitiendo:
 
-## 🌱 Instrucciones para correr de forma local:
+- Visualizar publicaciones
+- Interactuar con comentarios
+- Navegar entre vistas
+- Realizar operaciones básicas de usuario
 
-Una vez descargado este repositorio...
+Este front-end fue desarrollado como parte del **Trabajo Práctico 2 – Interfaces de Usuario, Grupo 10**.
 
-### 📄 Descargar el repositorio de nuestra API:
+---
 
-Debemos ingresar y descargar el repositorio del BackEnd aquí: [https://github.com/EP-UnaHur-2025C2/anti-social-documental-grupo1]
+## 🚀 Tecnologías y herramientas
 
-‼️IMPORTANTE tener instalado Docker, si no lo tenés, lo podés descargar desde el siguiente link:
-https://docs.docker.com/desktop/setup/install/windows-install/
+- **React** con **TypeScript**
+- **Vite** (bundler rápido para desarrollo)
+- **Bootstrap** (framework CSS)
+- **Axios / fetch** para consumo de API
+- HTML semántico y componentes reutilizables
 
-### 📲 Instalar las dependencias:
+---
 
-Ejecutamos el siguiente comando en la terminal de ambos proyectos:
+## 🛠️ Instalación y ejecución
 
+### 1. Clonar el repositorio
+
+```bash
+git clone https://github.com/araamaldonado/anti-social-front.git
+cd anti-social-front
 ```
+### 2. Instalar dependencias
+
+```bash
 npm install
 ```
+### 3. Configurar backend
 
-Una vez finalizado nos dirigimos a la API, abrímos una terminal y ponemos el comando:
+Este proyecto requiere que la API backend de MongoDB esté corriendo.
+Cloná y levantá la API desde:
 
-```
+🔗 https://github.com/araamaldonado/antisocial_mongo_back
+
+Arrancá la base de datos y el backend con Docker y npm:
+
+```bash
 docker-compose up -d
-```
-
-Lo que debería, si no tenemos instaladas las imágenes de MongoDB y Mongoose, poner a descargar las mismas y cuando finalice debe correr el servidor de nuestra BD y hacer aparecer la carpeta "mongo_data" en la raíz del proyecto.
-
-### 🚀 Poner en funcionamiento la pagina:
-
-
-Por último, debemos escribir en la terminal en ambos proyectos el comando:
-
-```
 npm run dev
 ```
+Asegurate de tener Docker instalado en tu máquina!
 
-Para finalmente, tener el proyecto corriendo.
+### 📱 Flujo de la aplicación
+
+1- El usuario abre la app en el navegador
+2- La app realiza peticiones a la API backend
+3- Se muestran publicaciones y comentarios
+4- Se pueden crear nuevas publicaciones o interactuar con contenido
 
 ## 😁Desarrolladores😁
 
