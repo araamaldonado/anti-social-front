@@ -5,7 +5,6 @@ export default function Footer() {
         <footer className="footer">
         <div className="footer-container">
             <div className="footer-content">
-                <h2 className="footer-logo">Unahur Anti-Social Net</h2>
                 <ul className="footer-links">
                 <li><a href="#">Inicio</a></li>
                 <li><a href="#">Explorar</a></li>

@@ -6,7 +6,6 @@ import Profile from "./pages/Profile";
 import PostDetailed from "./pages/PostDetailed"
 import ProtectorRuta from "./components/ProtectorRuta";
 
-// Abria que pobrar algo para que HomePage solo sea accesible si hay un usuario logueado...
 function App() {
   return (
     <Router>

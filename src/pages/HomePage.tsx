@@ -217,6 +217,7 @@ function HomePage() {
         <Header />
         <main className="pb-5">
 
+        {/* Crear una publicación */}
         <div className="d-flex flex-column justify-content-center align-items-center mt-4">
             <div
                 className="card shadow p-4 w-100"
@@ -249,40 +250,44 @@ function HomePage() {
                 </div>
             </div>
         </div>
-
-    
-
-            {featuredPosts.length > 0 && (
+        
+        {/* RENDER DESTACADAS */}
+        {featuredPosts.length > 0 && (
             <section className="container mt-4">
-                <h5 className="text-center  mb-3" style={
-                    {color: "var(--text-color)"}}>✨ Publicaciones destacadas</h5>
-                <div className="row justify-content-center"  style={{backgroundColor:"var(--bg-color)"}}>
-                {featuredPosts.map((post) => (
-                    <div key={post._id} className="col-md-4 mb-3">
-                    <div className="card shadow-sm h-100 textoHome">
-                        {post.images?.[0] && (
-                        <img
-                            src={post.images[0].url}
-                            className="card-img-top"
-                            alt="destacada"
-                            style={{ height: "200px", objectFit: "cover" }}
-                        />
-                        )}
-                        <div className="card-body textoHome">
-                        <h6 className="card-title text-secondary" style={{color:"var(--text-color)!important"}}>{post.user?.nickname ?? "Usuario eliminado"}</h6>
-                        <p className="card-text small">{post.texto.slice(0, 100)}...</p>
-                        <Link to={`/post/${post._id}`} className="btn btn-outline-primary btn-sm">
-                            Ver más
-                        </Link>
+                <h5 
+                className="text-center  mb-3" 
+                style={{color: "var(--text-color)"}}>
+                    ✨ Publicaciones destacadas
+                </h5>
+
+                <div className="row justify-content-center">
+                    {featuredPosts.map((post) => (
+                        <div key={post._id} className="col-md-4 mb-3">
+                            <div className="card shadow-sm h-100 textoHome">
+                                {post.images?.[0] && (
+                                <img
+                                    src={post.images[0].url}
+                                    className="card-img-top"
+                                    alt="destacada"
+                                    style={{ height: "200px", objectFit: "cover" }}
+                                />
+                                )}
+                                <div className="card-body textoHome">
+                                    <h6 className="card-title text-secondary" style={{color:"var(--text-color)!important"}}>{post.user?.nickname ?? "Usuario eliminado"}</h6>
+                                    <p className="card-text small">{post.texto.slice(0, 100)}...</p>
+                                    <Link to={`/post/${post._id}`} className="btn btn-outline-primary btn-sm">
+                                        Ver más
+                                    </Link>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    </div>
-                ))}
+                    ))}
                 </div>
             </section>
-            )}
+        )}
 
-            <section className="container mt-4">
+        {/* FILTRO DE TAGS */}
+        <section className="container mt-4">
             <div className="text-center mb-3">
                 <button
                 className={`btn btn-sm me-2 ${!activeTag ? "btn-primary" : "btn-outline-primary"}`}
@@ -300,96 +305,97 @@ function HomePage() {
                 </button>
                 ))}
             </div>
-            </section>
-
-            <div className="d-flex flex-column align-items-center justify-content-center mt-4">
+        </section>
+        
+        {/* POSTS FILTRADOS POR EL FILTRO DE TAGS */}
+        <div className="d-flex flex-column align-items-center justify-content-center mt-4">
             <div className="w-100" style={{ maxWidth: "700px", width: "90%" }}>
                 {filteredPosts.length === 0 ? (
-                <div className="card shadow p-4 text-center">
-                    <img src={noPosts} alt="noPostsImg" className="img-fluid mb-3" style={{ maxHeight: "250px", objectFit: "contain" }} />
-                    <p className="fs-5 text-muted mb-0" style={{color:"var(--text-color)!important"}}>No hay publicaciones con ese filtro.</p>
-                </div>
-                ) : (
-                filteredPosts.map((post) => {
-                    const totalImages = post.images?.length || 0;
-                    const currentIndex = currentImageIndex[post._id] || 0;
-
-                    return (
-                    <div key={post._id} className="card mb-3 shadow-sm textoHome">
-                        <div className="card-body">
-                        <p className="fs-5 border-bottom p-2" style={{color:"var(--text-color)!important"}}>
-                            {post.user?.nickname ?? "Usuario eliminado"}:
-                        </p>
-                        <p className="text-left p-2">{post.texto}</p>
-
-                        {totalImages > 0 && (
-                            <div
-                            className="position-relative d-flex justify-content-center align-items-center bg-light rounded-4 overflow-hidden mb-2"
-                            style={{ width: "100%", height: "400px", maxHeight: "60vh" }}
-                            >
-                            {post.images?.[currentIndex] && (
-                                <img
-                                src={post.images[currentIndex].url}
-                                alt={`imagen ${currentIndex + 1}`}
-                                className="img-fluid w-100 h-100"
-                                style={{ objectFit: "cover", transition: "opacity 0.3s ease-in-out" }}
-                                />
-                            )}
-
-                            {totalImages > 1 && (
-                                <>
-                                <button
-                                    onClick={() => handlePrev(post._id, totalImages)}
-                                    className="btn btn-light position-absolute start-0 top-50 translate-middle-y rounded-circle shadow"
-                                    style={{ opacity: 0.8, width: "40px", height: "40px" }}
-                                >
-                                    ❮
-                                </button>
-                                <button
-                                    onClick={() => handleNext(post._id, totalImages)}
-                                    className="btn btn-light position-absolute end-0 top-50 translate-middle-y rounded-circle shadow"
-                                    style={{ opacity: 0.8, width: "40px", height: "40px" }}
-                                >
-                                    ❯
-                                </button>
-                                </>
-                            )}
-                            </div>
-                        )}
-
-                        {post.tags &&
-                            post.tags.map((tag, index) => (
-                            <span key={index} className="badge bg-secondary me-1 my-2">
-                                #{tag.nombre}
-                            </span>
-                            ))}
-
-                        <div className="my-2 border-top pt-2">
-                            <div className="d-flex justify-content-start align-items-center">
-                            <p className="mb-0 opacity-50">
-                                Comentarios: {post.comments?.length ?? 0}
-                            </p>
-                            <div className="mx-2 opacity-50">|</div>
-                            <Link
-                                className="link-secondary link-offset-2 link-opacity-50-hover"
-                                style={{ textDecoration: "none" }}
-                                to={`/post/${post._id}`}
-                            >
-                                Ver más
-                            </Link>
-                            </div>
-                        </div>
-                        </div>
+                    <div className="card shadow p-4 text-center">
+                        <img src={noPosts} alt="noPostsImg" className="img-fluid mb-3" style={{ maxHeight: "250px", objectFit: "contain" }} />
+                        <p className="fs-5 text-muted mb-0" style={{color:"var(--text-color)!important"}}>No hay publicaciones con ese filtro.</p>
                     </div>
-                    );
-                })
+                ) : (
+                    filteredPosts.map((post) => {
+                        const totalImages = post.images?.length || 0;
+                        const currentIndex = currentImageIndex[post._id] || 0;
+
+                        return (
+                            <div key={post._id} className="card mb-3 shadow-sm textoHome">
+                                <div className="card-body">
+                                    <p className="fs-5 border-bottom p-2" style={{color:"var(--text-color)!important"}}>
+                                        {post.user?.nickname ?? "Usuario eliminado"}:
+                                    </p>
+                                    <p className="text-left p-2">{post.texto}</p>
+
+                                    {totalImages > 0 && (
+                                        <div
+                                        className="position-relative d-flex justify-content-center align-items-center bg-light rounded-4 overflow-hidden mb-2"
+                                        style={{ width: "100%", height: "400px", maxHeight: "60vh" }}
+                                        >
+                                        {post.images?.[currentIndex] && (
+                                            <img
+                                            src={post.images[currentIndex].url}
+                                            alt={`imagen ${currentIndex + 1}`}
+                                            className="img-fluid w-100 h-100"
+                                            style={{ objectFit: "cover", transition: "opacity 0.3s ease-in-out" }}
+                                            />
+                                        )}
+
+                                        {totalImages > 1 && (
+                                            <>
+                                            <button
+                                                onClick={() => handlePrev(post._id, totalImages)}
+                                                className="btn btn-light position-absolute start-0 top-50 translate-middle-y rounded-circle shadow"
+                                                style={{ opacity: 0.8, width: "40px", height: "40px" }}
+                                            >
+                                                ❮
+                                            </button>
+                                            <button
+                                                onClick={() => handleNext(post._id, totalImages)}
+                                                className="btn btn-light position-absolute end-0 top-50 translate-middle-y rounded-circle shadow"
+                                                style={{ opacity: 0.8, width: "40px", height: "40px" }}
+                                            >
+                                                ❯
+                                            </button>
+                                            </>
+                                        )}
+                                        </div>
+                                    )}
+
+                                    {post.tags &&
+                                        post.tags.map((tag, index) => (
+                                        <span key={index} className="badge bg-secondary me-1 my-2">
+                                            #{tag.nombre}
+                                        </span>
+                                        ))}
+
+                                    <div className="my-2 border-top pt-2">
+                                        <div className="d-flex justify-content-start align-items-center">
+                                            <p className="mb-0 opacity-50">
+                                                Comentarios: {post.comments?.length ?? 0}
+                                            </p>
+                                            <div className="mx-2 opacity-50">|</div>
+                                            <Link
+                                                className="link-secondary link-offset-2 link-opacity-50-hover"
+                                                style={{ textDecoration: "none" }}
+                                                to={`/post/${post._id}`}
+                                            >
+                                                Ver más
+                                            </Link>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    })
                 )}
             </div>
-            </div>
-            
-            {/* nuevo post */}
+        </div>
+        
+        {/* nuevo post */}
 
-            {showModal && (
+        {showModal && (
             <div
                 className="modal fade show d-block"
                 tabIndex={-1}

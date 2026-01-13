@@ -11,13 +11,13 @@ import "../styles/home.css"
 
 const Profile = () => {
   const navigate = useNavigate();
-  const { user, initialized, setUser } = useContext(UserContext);
+  const { user, initialized} = useContext(UserContext);
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
 
   const API_URL = "http://localhost:3000";
 
-    useEffect(() => {
+  useEffect(() => {
     if (!initialized) return; // Esperar el contexto
     if (!user) {
       navigate("/");
@@ -35,15 +35,10 @@ const Profile = () => {
       }
     };
 
-    fetchPosts();
+      fetchPosts();
   }, [initialized, user, navigate]);
 
   if (!initialized || !user) return null;
-  const handleLogout = () => {
-    setUser(null);
-    localStorage.removeItem("user");
-    navigate("/");
-  };
 
   return (
     <>
@@ -65,10 +60,6 @@ const Profile = () => {
                 {user.nickname.charAt(0).toUpperCase()}
               </div>
               <h2 className="fw-bold text-primary mb-1">{user.nickname}</h2>
-              <p className="text-muted" >Bienvenido a tu perfil personal</p>
-              <button className="btn btn-outline-danger mt-2" onClick={handleLogout}>
-                <i className="bi bi-box-arrow-right me-2"></i> Cerrar sesión
-              </button>
             </div>
           </div>
         </div>
@@ -107,12 +98,6 @@ const Profile = () => {
                           ))}
                         </div>
                       )}
-                      
-                      {
-                        post.images && post.images?.length > 0 
-                        ? <p className="text-muted small mb-3">Este post contiene imagenes</p>
-                        : <p className="text-muted small mb-3">Este post no contiene imagenes</p>
-                      }
 
                       <p className="text-muted small mb-3">
                         💬 {post.comments?.length || 0} comentarios
