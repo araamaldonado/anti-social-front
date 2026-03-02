@@ -63,8 +63,9 @@ Asegurate de tener Docker instalado en tu máquina!
 3- Se muestran publicaciones y comentarios
 4- Se pueden crear nuevas publicaciones o interactuar con contenido
 
-## 😁Desarrolladores😁
+## 😁 Desarrolladores
 
-- Fausto Romay
-- Maldonado Araceli Carina
-- Lautaro Farias
+Proyecto frontend desarrollado originalmente en el marco del Trabajo Práctico de la materia Construcción de Interfaces de Usuario junto a:
+Fausto Romay, Lautaro Farias, Maldonado Araceli Carina
+
+Fork realizado por Araceli Maldonado con modificaciones y mejoras posteriores.
