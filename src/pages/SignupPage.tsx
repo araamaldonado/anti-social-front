@@ -20,19 +20,21 @@ function SignupPage() {
         setRegistrado("");
 
         try {
-            const newUser = { mail, nickname };
+            const newUser = { mail, nickname, password };
 
             // llamada real al backend
             await registerUser(newUser);
 
-            setRegistrado("Usuario creado exitosamente, redirigiendo al Login")
-            setTimeout(() => navigate("/"), 5000); // redirige al login
+            setRegistrado("Usuario creado exitosamente")
+            setTimeout(() => navigate("/"), 2300); // redirige al login
         } catch (err) {
             console.error(err);
             if (typeof err === "string") setError(err);
             else setError("Error al registrarse");
         }
     };
+
+    // AGREGAR LAS REGLAS PARA LA CREACION DE CONTRASEÑA
 
     return (
         <>

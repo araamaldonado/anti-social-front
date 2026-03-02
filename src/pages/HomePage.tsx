@@ -138,7 +138,7 @@ function HomePage() {
 
         const newPostData = {
             texto: description,
-            user: loggedUser,
+            user: loggedUser._id,
             tags: allTags.map((tag) => tag._id),
             images: createdImages.map((img: { _id: string }) => img._id),
         };

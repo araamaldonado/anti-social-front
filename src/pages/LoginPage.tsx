@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import { loginUser } from "../services/userService";
@@ -13,7 +13,13 @@ function LoginPage() {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
-    const { setUser } = useContext(UserContext);
+    const { user, setUser, initialized } = useContext(UserContext);
+
+    useEffect(() => {
+        if (initialized && user){
+            navigate("/home")
+        }
+    }, [initialized, user, navigate])
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -21,25 +27,20 @@ function LoginPage() {
         setLoading(true);
 
         try {
-            // Contraseña simple temporal (solo para pruebas)
-            if (password !== "12345") {
-                setLoading(false);
-                return setError("Contraseña incorrecta");
-            }
-            
+            const loginData = {nickname, password}
+
             setLoading(true)
 
             // Llamada al backend
-            const userData = await loginUser(nickname.trim());
-
+            const userData = await loginUser(loginData);
             // Guardar usuario en contexto y localStorage
-            setUser(userData);
-            localStorage.setItem("user", JSON.stringify(userData));
+            setUser(userData.user);
+            localStorage.setItem("user", JSON.stringify(userData.token));
 
             setTimeout(() => {
             setLoading(false);
             navigate("/home");
-            }, 2000)
+            }, 2300)
             
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {

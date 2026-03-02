@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import Header from "../components/Header";
 import { getPostById, type Post } from "../services/postsService";
 import { createComment } from "../services/commentService";
@@ -7,6 +7,7 @@ import type Comment from "../services/commentService";
 import Footer from "../components/Footer";
 import "../styles/postDetailed.css";
 import "../styles/footer.css";
+import { UserContext } from "../context/UserContext";
 
 
 export default function PostDetailed() {
@@ -16,10 +17,7 @@ export default function PostDetailed() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [newComment, setNewComment] = useState("");
   const [loadingComment, setLoadingComment] = useState(false);
-
-  // usuario
-  const storedUser = localStorage.getItem("user")
-  const userId = storedUser ? JSON.parse(storedUser)._id : "671edc82c71b28efc915db72" // ID Temporal
+  const { user } = useContext(UserContext)
 
   // Traer post
   useEffect(() => {
@@ -57,20 +55,18 @@ useEffect(() => {
     setLoadingComment(true);
 
     try {
-      const parsedUser = storedUser ? JSON.parse(storedUser) : null;
-
       const newCommentData = await createComment({
-        user: userId,
+        user: user._id,
         post: post._id,
         texto: newComment,
       });
 
       const enrichedComment = {
         ...newCommentData,
-        user: parsedUser
+        user: user
           ? {
-              _id: userId,
-              nickname: parsedUser.nickname,
+              _id: user._id,
+              nickname: user.nickname,
             }
           : { nickname: "Usuario desconocido" },
       };
@@ -118,7 +114,7 @@ useEffect(() => {
           <p className="fs-5">{post.texto}</p>
 
           {/* Carrusel */}
-          {totalImages > 0 ? (
+          {totalImages > 0 && (
             <div className="carousel-wrapper position-relative mb-4">
               <img
                 src={images[currentIndex].url}
@@ -149,15 +145,13 @@ useEffect(() => {
                 {currentIndex + 1} / {totalImages}
               </div>
             </div>
-          ) : (
-            <p className="text-muted">Este post no contiene imágenes.</p>
           )}
         </div>
 
         {/* Comentarios */}
 
         <div className="card shadow post-container p-4">
-
+          {!user && (<p>Inicia sesión o Registrate para dejar tu comentario</p>)}
           <div className="input-group">
               <input
                 type="text"
@@ -165,20 +159,19 @@ useEffect(() => {
                 placeholder="Escribe un comentario..."
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}
-                disabled={loadingComment}
+                disabled={loadingComment || !user}
               />
               <button
               className="btn btn-primary mb-1"
               type="button"
               onClick={handleAddComment}
-              disabled={loadingComment}
+              disabled={loadingComment || !user}
               >
               {loadingComment ? "Comentando..." : "Comentar"}
               </button>
           </div>
 
           <div className="border-bottom m-4"></div>
-
           {comments.length > 0 ? (
             comments.map((comment) => (
               <div key={comment._id} className="border-bottom mb-3 pb-2">

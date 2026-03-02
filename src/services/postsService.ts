@@ -5,9 +5,13 @@ import type Comment from "./commentService"
 
 const API_URL = "http://localhost:3000/post";
 
-export interface Post extends CreatePost {
+export interface Post{
   _id: number;
-  comments: Comment[]
+  comments: Comment[];
+  user: User | null;
+  texto: string;
+  images?: Image[]; 
+  tags?: Tag[]; 
 }
 
 export interface Image {
@@ -16,7 +20,7 @@ export interface Image {
 }
 
 export interface CreatePost {
-  user: User;
+  user: string;
   texto: string;
   images?: Image[]; 
   tags?: Tag[]; 

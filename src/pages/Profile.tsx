@@ -1,12 +1,12 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
-import axios from "axios";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import type { Post } from "../services/postsService";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/home.css"
+import { getUserPosts } from "../services/userService";
 
 
 const Profile = () => {
@@ -15,7 +15,6 @@ const Profile = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const API_URL = "http://localhost:3000";
 
   useEffect(() => {
     if (!initialized) return; // Esperar el contexto
@@ -23,11 +22,10 @@ const Profile = () => {
       navigate("/");
       return;
     }
-
     const fetchPosts = async () => {
       try {
-        const response = await axios.get(`${API_URL}/post/user/${user._id}`);
-        setPosts(response.data || []);
+        const response = await Promise.resolve(getUserPosts(user))
+        setPosts(response);
       } catch (error) {
         console.error("Error al obtener publicaciones:", error);
       } finally {
@@ -37,7 +35,6 @@ const Profile = () => {
 
       fetchPosts();
   }, [initialized, user, navigate]);
-
   if (!initialized || !user) return null;
 
   return (
