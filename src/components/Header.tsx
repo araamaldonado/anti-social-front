@@ -12,6 +12,8 @@ export default function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
 
     const handleLogout = () => {
+        localStorage.removeItem("token")
+        localStorage.removeItem("user")
         setUser(null);
         navigate("/");
     };
@@ -34,6 +36,12 @@ export default function Header() {
                     onClick={() => navigate("/home")}
                 />
 
+                <h4 className="text-center">
+                    ¡Hola, <Link to="/profile"><i className="nickname">
+                    {user?.nickname}
+                    </i></Link>!
+                </h4>
+
                 <div className="nav-right">
                     {!user ? (
                         <div className="nav-right">
@@ -45,11 +53,6 @@ export default function Header() {
                     )
                     : (
                     <div className="nav-right">
-                        <h1 className="nav-text">
-                            Hola, <i className="nav-text-nickname">
-                            {user?.nickname}
-                            </i>!
-                        </h1>
                         <nav className={`nav-icons ${menuOpen ? "open" : ""}`}>
                         <TemaBoton
                         />

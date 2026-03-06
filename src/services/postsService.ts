@@ -1,9 +1,7 @@
-import axios from "axios";
+import axiosInstance from "./axiosInstance"
 import type { Tag } from "./tagService";
 import type { User } from "./userService";
 import type Comment from "./commentService"
-
-const API_URL = "http://localhost:3000/post";
 
 export interface Post{
   _id: number;
@@ -30,7 +28,7 @@ export interface CreatePost {
 
 export const getPosts = async (): Promise<Post[]> => {
   try {
-    const response = await axios.get<Post[]>(`${API_URL}`);
+    const response = await axiosInstance.get<Post[]>("/post");
     return response.data;
   } catch (error) {
     console.error("Error al obtener los posts:", error);
@@ -39,16 +37,21 @@ export const getPosts = async (): Promise<Post[]> => {
 };
 
 export const newPost = async (createPost: CreatePost): Promise<Post> => {
-  const response = await axios.post<Post>(`${API_URL}`, createPost);
+  try {
+    const response = await axiosInstance.post<Post>("/post", createPost);
   return response.data;
+  } catch (error) {
+    console.error("Error al crear el post: ", error)
+    throw error
+  }
 };
 
 export const getPostById = async (id:string): Promise<Post> => {
   try {
-    const response = await axios.get<Post>(`${API_URL}/${id}`);
+    const response = await axiosInstance.get<Post>(`/post/${id}`);
     return response.data;
   } catch (error) {
-    console.error("Error al obtener el posts", error);
+    console.error("Error al obtener el post", error);
     throw error;
   }
 };

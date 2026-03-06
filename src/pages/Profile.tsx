@@ -24,7 +24,7 @@ const Profile = () => {
     }
     const fetchPosts = async () => {
       try {
-        const response = await Promise.resolve(getUserPosts(user))
+        const response = await getUserPosts(user)
         setPosts(response);
       } catch (error) {
         console.error("Error al obtener publicaciones:", error);

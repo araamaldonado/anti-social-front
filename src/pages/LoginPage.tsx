@@ -24,7 +24,6 @@ function LoginPage() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError("");
-        setLoading(true);
 
         try {
             const loginData = {nickname, password}
@@ -33,9 +32,9 @@ function LoginPage() {
 
             // Llamada al backend
             const userData = await loginUser(loginData);
-            // Guardar usuario en contexto y localStorage
+            // Guardar usuario en contexto y en "localStorage" EL TOKEN.
             setUser(userData.user);
-            localStorage.setItem("user", JSON.stringify(userData.token));
+            localStorage.setItem("token", userData.token);
 
             setTimeout(() => {
             setLoading(false);

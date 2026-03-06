@@ -23,7 +23,6 @@ function HomePage() {
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
     const [newTag, setNewTag] = useState("");
 
-
     // Filtro por etiquetas
     const [activeTag, setActiveTag] = useState<string | null>(null);
 
@@ -39,6 +38,7 @@ function HomePage() {
         const fetchData = async () => {
         try {
             const [postsData, tagsData] = await Promise.all([getPosts(), getTags()]);
+
             setPosts(postsData || []);
             setTags(tagsData || []);
 
@@ -311,7 +311,7 @@ function HomePage() {
         <div className="d-flex flex-column align-items-center justify-content-center mt-4">
             <div className="w-100" style={{ maxWidth: "700px", width: "90%" }}>
                 {filteredPosts.length === 0 ? (
-                    <div className="card shadow p-4 text-center">
+                    <div className="card shadow-sm p-4 text-center textoHome" >
                         <img src={noPosts} alt="noPostsImg" className="img-fluid mb-3" style={{ maxHeight: "250px", objectFit: "contain" }} />
                         <p className="fs-5 text-muted mb-0" style={{color:"var(--text-color)!important"}}>No hay publicaciones con ese filtro.</p>
                     </div>

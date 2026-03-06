@@ -1,7 +1,5 @@
-import axios from "axios";
-import type { User } from "../context/UserContext";
-
-const API_URL = "http://localhost:3000";
+import axiosInstance from "./axiosInstance";
+import axios from "axios" // manejo errores
 
 export interface createUser {
     mail: string;
@@ -28,27 +26,30 @@ export interface User {
 // Registrar usuario
 export const registerUser = async (userData:createUser) => {
     try {
-        const response = await axios.post(`${API_URL}/user`, userData);
+        const response = await axiosInstance.post("/user", userData);
         return response.data;
     } catch (error: unknown) {
-        console.error("Error al registrar usuario:", error);
-        const message =
-            axios.isAxiosError(error)
-                ? error.response?.data?.message ?? "Error en el registro"
-                : error instanceof Error
-                    ? error.message
-                    : String(error);
-        throw message;
+        if (axios.isAxiosError(error)){
+            throw new Error(
+                error.response?.data?.message ?? "Error del servidor"
+            );
+        }
+        if (error instanceof Error){
+            throw new Error(error.message)
+        }
+        throw new Error("Error desconocido")
     }
 };
 
 // Login: busca usuario por nickname
 export const getByNickname = async (nickname: string) => {
     try {
-        const response = await axios.get<User>(`${API_URL}/user/profile/${encodeURIComponent(nickname)}`);
+        const response = await axiosInstance.get<User>(`/user/profile/${encodeURIComponent(nickname)}`)
         return response.data;
+
     } catch (error: unknown) {
-        console.error("Error al iniciar sesión:", error);
+        console.log(error)
+        console.error("Error al obtener el perfil del usuario:", error);
         const message =
             axios.isAxiosError(error)
                 ? (error.response?.data as { message?: string })?.message ?? "Usuario no encontrado"
@@ -62,7 +63,7 @@ export const getByNickname = async (nickname: string) => {
 // Login:
 export const loginUser = async (loginData: userLogin): Promise<LoginResponse> => {
     try {
-        const response = await axios.post<LoginResponse>(`${API_URL}/user/login/`, loginData);
+        const response = await axiosInstance.post("/user/login/", loginData);
         return response.data;
     } catch (error: unknown) {
         console.error("Error al iniciar sesión:", error);
@@ -79,7 +80,7 @@ export const loginUser = async (loginData: userLogin): Promise<LoginResponse> =>
 // Obtener todos los usuarios
 export const getUsers = async (): Promise<User[]> => {
     try {
-        const response = await axios.get<User[]>(`${API_URL}/user`);
+        const response = await axiosInstance.get<User[]>("/user");
         return response.data;
     } catch (error) {
         console.error("Error al obtener usuarios:", error);
@@ -89,9 +90,10 @@ export const getUsers = async (): Promise<User[]> => {
 
 export const getUserPosts = async (userData: User) => {
     try {
-        const response = await axios.get(`${API_URL}/post/user/${{userData}._id}`);
+        const response = await axiosInstance.get(`/post/user/${userData._id}`);
         return (response.data || []);
     } catch (error) {
         console.error("Error al obtener publicaciones:", error);
+        throw error
     }
 };

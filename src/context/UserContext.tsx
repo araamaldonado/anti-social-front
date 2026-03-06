@@ -28,22 +28,39 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     const [initialized, setInitialized] = useState(false);
 
     useEffect(() => {
-        try {
-        const storedUser = localStorage.getItem("user");
-        if (storedUser) {
-            setUser(JSON.parse(storedUser));
-        }   
-        } catch (error) {
-            console.error("Error en el localStorage", error)
-        }
-        finally{
-            setInitialized(true);
-        }
+        const handleAuthError = () => {
+            setUser(null);
+        };
+
+        window.addEventListener("auth_error", handleAuthError);
+
+        return () => {
+            window.removeEventListener("auth_error", handleAuthError);
+        };
     }, []);
 
     useEffect(() => {
+    try {
+        const token = localStorage.getItem("token");
+        const storedUser = localStorage.getItem("user");
+
+        if (token && storedUser) {
+            setUser(JSON.parse(storedUser));
+        } else {
+            setUser(null);
+        }
+
+    } catch (error) {
+        console.error("Error en el localStorage", error)
+        setUser(null);
+    } finally {
+        setInitialized(true);
+    }
+}, []);
+
+    useEffect(() => {
         if(user) localStorage.setItem("user", JSON.stringify(user));
-        else localStorage.removeItem("user");;
+        else localStorage.removeItem("user");
     }, [user])
 
     const value = useMemo(() => ({ user, setUser, initialized}), [user, initialized])
