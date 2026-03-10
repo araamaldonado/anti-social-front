@@ -15,11 +15,15 @@ axiosInstance.interceptors.request.use(config => {
 axiosInstance.interceptors.response.use(
   (res) => res,
   (err) => {
+    const token = localStorage.getItem("token")
+    
     if (err.response?.status === 401){
       localStorage.removeItem("token");
       localStorage.removeItem("user")
 
-      window.dispatchEvent(new Event("auth_error"));
+      if (token){
+        window.dispatchEvent(new Event("auth_error"));
+      }
     }
     return Promise.reject(err)
   }

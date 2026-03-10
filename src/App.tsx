@@ -5,13 +5,14 @@ import SignupPage from "./pages/SignupPage";
 import Profile from "./pages/Profile";
 import PostDetailed from "./pages/PostDetailed"
 import ProtectorRuta from "./components/ProtectorRuta";
+import ModalRedireccion from "./components/ModalRedireccion";
 
 function App() {
   return (
     <Router>
+      <ModalRedireccion />
       <Routes>
         <Route path="/" element={<LoginPage />} />
-        <Route path="*" element={<Navigate to="/home"/>}></Route>
         <Route path="/home" element={
           <ProtectorRuta>
             <HomePage/>
@@ -25,6 +26,7 @@ function App() {
           </ProtectorRuta>
           } />
         <Route path="/post/:id" element={<PostDetailed />} />
+        <Route path="*" element={<Navigate to="/home"/>}></Route>
       </Routes>
     </Router>
   );
