@@ -8,6 +8,7 @@ import { getTags, createTags, type Tag } from "../services/tagService";
 import { createImage } from "../services/imagesService";
 import "../styles/home.css"
 import { UserContext } from "../context/UserContext";
+import toast from "react-hot-toast";
 
 function HomePage() {
     const [posts, setPosts] = useState<Post[]>([]);
@@ -48,6 +49,7 @@ function HomePage() {
             }
         } catch (error) {
             console.error("Error al traer los datos:", error);
+            toast.error("Estamos teniendo problemas trayendo los posts (╥︣﹏᷅╥)")
         } finally {
             setLoading(false);
         }
@@ -96,7 +98,7 @@ function HomePage() {
             setNewTag("");
         } catch (error) {
             console.error("Error al crear etiqueta:", error);
-            alert("Hubo un problema al crear la etiqueta");
+            toast.error("Hubo un problema al crear la etiqueta ( ˘︹˘ )");
         }
     };
 
@@ -106,12 +108,12 @@ function HomePage() {
     // CREAR NUEVO POST
     const handleSubmit = async () => {
         if (!description.trim()) {
-        alert("La descripción es obligatoria");
+        toast.error("La descripción es obligatoria");
         return;
         }
 
         if (!loggedUser) {
-        alert("Debés iniciar sesión para publicar");
+        toast.error("Debés iniciar sesión para publicar");
         return;
         }
 
@@ -144,7 +146,7 @@ function HomePage() {
         };
 
         await newPost(newPostData);
-        alert("¡Publicación creada con éxito!");
+        toast.success("Publicacion creada con exito ✍(◔◡◔)")
 
         setDescription("");
         setImageUrls([""]);
@@ -170,7 +172,7 @@ function HomePage() {
             }
 
             console.error("Error al crear el post:", detalle);
-            alert("Error al publicar el post");
+            toast.error("Error al publicar el post");
         }
     };
 

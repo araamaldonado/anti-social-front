@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Header from "../components/Header";
 import { getPostById, type Post } from "../services/postsService";
 import { createComment } from "../services/commentService";
@@ -8,6 +8,7 @@ import Footer from "../components/Footer";
 import "../styles/postDetailed.css";
 import "../styles/footer.css";
 import { UserContext } from "../context/UserContext";
+import toast from "react-hot-toast"
 
 
 export default function PostDetailed() {
@@ -49,8 +50,12 @@ useEffect(() => {
 
     // Crear comentario
   const handleAddComment = async () => {
-    if (!newComment.trim()) return alert("El comentario no puede estar vacío");
+    if (!newComment.trim()) return toast.error("El comentario no puede estar vacío");
     if (!post) return;
+    if (!user) {
+      toast.error("Tienes que estar logeado para comentar.")
+      return;
+    }
 
     setLoadingComment(true);
 
@@ -77,10 +82,11 @@ useEffect(() => {
         prev ? { ...prev, comments: [...prev.comments, enrichedComment] } : prev
       );
 
+      toast.success("Comentario creado con exito ≧'◡'≦")
       setNewComment("");
     } catch (error) {
       console.error("Error al crear el comentario:", error);
-      alert("Error al enviar el comentario");
+      toast.error("Error al enviar el comentario (╥﹏╥)");
     } finally {
       setLoadingComment(false);
     }

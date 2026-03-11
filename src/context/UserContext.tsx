@@ -46,9 +46,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
 
         if (token && storedUser) {
             setUser(JSON.parse(storedUser));
-        } else {
-            setUser(null);
-        }
+        } 
 
     } catch (error) {
         console.error("Error en el localStorage", error)

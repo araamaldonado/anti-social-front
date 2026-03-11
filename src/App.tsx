@@ -6,11 +6,13 @@ import Profile from "./pages/Profile";
 import PostDetailed from "./pages/PostDetailed"
 import ProtectorRuta from "./components/ProtectorRuta";
 import ModalRedireccion from "./components/ModalRedireccion";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
     <Router>
       <ModalRedireccion />
+      <Toaster position="top-right" />
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/home" element={

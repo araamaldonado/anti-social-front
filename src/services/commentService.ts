@@ -1,4 +1,5 @@
 import axios from "axios";
+import axiosInstance from "./axiosInstance";
 import type { User } from "./userService";
 import type { Post } from "./postsService";
 
@@ -41,7 +42,7 @@ export const getCommentById = async (id:string): Promise<Comment> => {
 // Crear un nuevo comentario
 export const createComment = async (commentData: CreateComment) => {
     try {
-        const response = await axios.post(`${API_URL}/`, commentData);
+        const response = await axiosInstance.post(`${API_URL}/`, commentData);
         return response.data;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
