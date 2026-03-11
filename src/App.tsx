@@ -12,7 +12,7 @@ function App() {
   return (
     <Router>
       <ModalRedireccion />
-      <Toaster position="top-right" />
+      <Toaster position="top-right"  />
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/home" element={
