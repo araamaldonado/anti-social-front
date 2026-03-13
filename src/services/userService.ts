@@ -14,7 +14,7 @@ export interface userLogin {
 
 export interface LoginResponse {
     user: User;
-    token: string;
+    accessToken: string;
 }
 
 export interface User {
@@ -64,6 +64,7 @@ export const getByNickname = async (nickname: string) => {
 export const loginUser = async (loginData: userLogin): Promise<LoginResponse> => {
     try {
         const response = await axiosInstance.post("/user/login/", loginData);
+        console.log(response)
         return response.data;
     } catch (error: unknown) {
         console.error("Error al iniciar sesión:", error);
