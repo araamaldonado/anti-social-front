@@ -7,21 +7,12 @@ export interface createUser {
     password: string;
 }
 
-export interface userLogin {
-    nickname: string;
-    password: string;
-}
-
-export interface LoginResponse {
-    user: User;
-    accessToken: string;
-}
-
 export interface User {
     _id: string;
     mail: string;
     nickname: string;
 }
+
 
 // Registrar usuario
 export const registerUser = async (userData:createUser) => {
@@ -50,24 +41,6 @@ export const getByNickname = async (nickname: string) => {
     } catch (error: unknown) {
         console.log(error)
         console.error("Error al obtener el perfil del usuario:", error);
-        const message =
-            axios.isAxiosError(error)
-                ? (error.response?.data as { message?: string })?.message ?? "Usuario no encontrado"
-                : error instanceof Error
-                    ? error.message
-                    : String(error);
-        throw message;
-    }
-};
-
-// Login:
-export const loginUser = async (loginData: userLogin): Promise<LoginResponse> => {
-    try {
-        const response = await axiosInstance.post("/user/login/", loginData);
-        console.log(response)
-        return response.data;
-    } catch (error: unknown) {
-        console.error("Error al iniciar sesión:", error);
         const message =
             axios.isAxiosError(error)
                 ? (error.response?.data as { message?: string })?.message ?? "Usuario no encontrado"

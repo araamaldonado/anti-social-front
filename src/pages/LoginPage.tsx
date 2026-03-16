@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
-import { loginUser } from "../services/userService";
+import { loginUser } from "../services/authService";
 import logo from "../assets/logo2.png";
 import imagen from "../assets/imagenFondo.png";
 import "../styles/loginPage.css";
@@ -26,7 +26,11 @@ function LoginPage() {
         setError("");
 
         try {
-            const loginData = {nickname, password}
+
+            const loginData = {
+                nickname: nickname.trim().toLowerCase(), 
+                password
+            }
 
             setLoading(true)
 
@@ -34,7 +38,7 @@ function LoginPage() {
             const userData = await loginUser(loginData);
             // Guardar usuario en contexto y en "localStorage" EL TOKEN.
             setUser(userData.user);
-            localStorage.setItem("token", userData.token);
+            localStorage.setItem("token", userData.accessToken);
 
             setTimeout(() => {
             setLoading(false);

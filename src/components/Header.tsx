@@ -5,17 +5,23 @@ import { Home, UserRound, LogOut} from "lucide-react";
 import "../styles/header.css"
 import { UserContext } from "../context/UserContext";
 import TemaBoton from "./TemaBoton";
+import { logoutUser } from "../services/authService";
 
 export default function Header() {
     const { user, setUser } = useContext(UserContext)
     const navigate = useNavigate();
     const [menuOpen, setMenuOpen] = useState(false);
 
-    const handleLogout = () => {
-        localStorage.removeItem("token")
-        localStorage.removeItem("user")
-        setUser(null);
-        navigate("/");
+    const handleLogout = async () => {
+        try {
+            await logoutUser()
+            localStorage.removeItem("token")
+            localStorage.removeItem("user")
+            setUser(null);
+            navigate("/");
+        } catch (error) {
+            console.error(error, "Error al cerrar sesión")
+        }
     };
 
 

@@ -1,5 +1,6 @@
 import axios from "axios"
 import type { InternalAxiosRequestConfig } from "axios"
+import { logoutUser, refreshToken } from "./authService"
 
 interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean
@@ -27,25 +28,19 @@ axiosInstance.interceptors.response.use(
   async (err) => {
 
     const originalRequest = err.config as CustomAxiosRequestConfig
-    const token = localStorage.getItem("token")
 
     if (
       err.response?.status === 401 &&
       !originalRequest._retry &&
-      originalRequest.url !== "/auth/refresh"
+      originalRequest.url !== "/auth/refresh" &&
+      !originalRequest.url?.includes("/user/login")
     ){
 
       originalRequest._retry = true
 
       try {
 
-        const response = await axios.post(
-          "http://localhost:3000/auth/refresh",
-          {},
-          { withCredentials: true }
-        )
-
-        const newToken = response.data.accessToken
+        const newToken = await refreshToken()
 
         localStorage.setItem("token", newToken)
 
@@ -58,15 +53,18 @@ axiosInstance.interceptors.response.use(
 
         localStorage.removeItem("token")
         localStorage.removeItem("user")
-
-        if (token){
-          window.dispatchEvent(new Event("auth_error"))
+        try {
+            await logoutUser();
+        } catch {
+            // Ignoramos errores aquí, ya que el usuario igual será deslogueado localmente
+            console.warn("No se pudo cerrar sesión en el servidor, pero se limpió localmente.");
         }
+
+        window.dispatchEvent(new Event("auth_error"))
 
         return Promise.reject(error)
       }
     }
-
     return Promise.reject(err)
   }
 )
