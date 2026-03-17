@@ -40,7 +40,7 @@ export const loginUser = async (loginData: userLogin): Promise<LoginResponse> =>
 };
 
 export const logoutUser = async () => {
-    await axiosInstance.post("/auth/logout", {}, {
+    await axiosInstance.post("/user/logout", {}, {
         withCredentials: true
     })
 }

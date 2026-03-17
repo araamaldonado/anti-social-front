@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react"
 import candadoImg from "../assets/candadoPNG.png"
-import { useNavigate } from "react-router-dom"
 
 
 function ModalRedireccion() {
   const [modalActivo, setModalActivo] = useState(false)
-  const navigate = useNavigate()
 
   useEffect(() => {
     const handleAuthError = () => {
@@ -15,7 +13,7 @@ function ModalRedireccion() {
     return () => {
         window.removeEventListener("auth_error", handleAuthError);
         }
-  }, [navigate])
+  }, [])
 
   const handleButton = () => {
     setModalActivo(false)

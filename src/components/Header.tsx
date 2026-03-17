@@ -18,7 +18,6 @@ export default function Header() {
             localStorage.removeItem("token")
             localStorage.removeItem("user")
             setUser(null);
-            navigate("/");
         } catch (error) {
             console.error(error, "Error al cerrar sesión")
         }
