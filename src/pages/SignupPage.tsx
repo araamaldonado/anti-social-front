@@ -20,7 +20,11 @@ function SignupPage() {
         setRegistrado("");
 
         try {
-            const newUser = { mail, nickname, password };
+            const newUser = { 
+                mail: mail.trim().toLowerCase(), 
+                nickname: nickname.trim().toLowerCase(),
+                password
+            };
 
             // llamada real al backend
             await registerUser(newUser);
@@ -29,8 +33,11 @@ function SignupPage() {
             setTimeout(() => navigate("/"), 2300); // redirige al login
         } catch (err) {
             console.error(err);
-            if (typeof err === "string") setError(err);
-            else setError("Error al registrarse");
+            if (err instanceof Error) {
+                setError(err.message); 
+            } else {
+                setError("Ocurrió un error inesperado");
+            }
         }
     };
 

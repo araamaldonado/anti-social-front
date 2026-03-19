@@ -1,3 +1,21 @@
+/* Selector de alta especificidad */
+div.card.cardPost {
+  cursor: pointer !important;
+  transition: background-color 0.2s ease, transform 0.2s ease !important;
+}
+
+/* Hover Modo Claro */
+div.card.cardPost:hover {
+  background-color: rgba(0, 0, 0, 0.05) !important;
+  transform: translateY(-2px);
+}
+
+/* Hover Modo Oscuro (cuando el body tiene la clase dark-mode) */
+body.dark-mode div.card.cardPost:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4) !important;
+}
+
 .textoHome{
   color: var(--input-color) !important;
   background-color: var(--card-bg);
@@ -11,3 +29,4 @@ textarea, input{
 textarea::placeholder, input::placeholder{
   color: var(--input-color)!important;
 }
+

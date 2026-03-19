@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import noPosts from "../assets/noPostsBored.png";
 import { getPosts, newPost, type Post } from "../services/postsService";
 import { getTags, createTags, type Tag } from "../services/tagService";
@@ -14,7 +14,7 @@ function HomePage() {
     const [posts, setPosts] = useState<Post[]>([]);
     const [loading, setLoading] = useState(true);
     const [showModal, setShowModal] = useState(false);
-
+    const navigate = useNavigate()
     const { user: loggedUser } = useContext(UserContext);
 
     // Campos del nuevo post
@@ -57,6 +57,12 @@ function HomePage() {
 
         fetchData();
     }, []);
+
+    // CLICK EN POSTS
+    
+    const handleClick = (id: string | number) => {
+        navigate(`/post/${id}`)
+    }
 
     // MANEJO DE CAMPOS
     const handleAddImageField = () => setImageUrls([...imageUrls, ""]);
@@ -265,7 +271,7 @@ function HomePage() {
                 <div className="row justify-content-center">
                     {featuredPosts.map((post) => (
                         <div key={post._id} className="col-md-4 mb-3">
-                            <div className="card shadow-sm h-100 textoHome">
+                            <div className="card cardPost shadow-sm h-100 textoHome" onClick={() => handleClick(post._id)}>
                                 {post.images?.[0] && (
                                 <img
                                     src={post.images[0].url}
@@ -277,9 +283,6 @@ function HomePage() {
                                 <div className="card-body textoHome">
                                     <h6 className="card-title text-secondary" style={{color:"var(--text-color)!important"}}>{post.user?.nickname ?? "Usuario eliminado"}</h6>
                                     <p className="card-text small">{post.texto.slice(0, 100)}...</p>
-                                    <Link to={`/post/${post._id}`} className="btn btn-outline-primary btn-sm">
-                                        Ver más
-                                    </Link>
                                 </div>
                             </div>
                         </div>
@@ -313,7 +316,7 @@ function HomePage() {
         <div className="d-flex flex-column align-items-center justify-content-center mt-4">
             <div className="w-100" style={{ maxWidth: "700px", width: "90%" }}>
                 {filteredPosts.length === 0 ? (
-                    <div className="card shadow-sm p-4 text-center textoHome" >
+                    <div className="card cardPost shadow-sm p-4 text-center textoHome" >
                         <img src={noPosts} alt="noPostsImg" className="img-fluid mb-3" style={{ maxHeight: "250px", objectFit: "contain" }} />
                         <p className="fs-5 text-muted mb-0" style={{color:"var(--text-color)!important"}}>No hay publicaciones con ese filtro.</p>
                     </div>
@@ -323,7 +326,7 @@ function HomePage() {
                         const currentIndex = currentImageIndex[post._id] || 0;
 
                         return (
-                            <div key={post._id} className="card mb-3 shadow-sm textoHome">
+                            <div key={post._id} className="card cardPost mb-3 shadow-sm textoHome" onClick={() => handleClick(post._id)}>
                                 <div className="card-body">
                                     <p className="fs-5 border-bottom p-2" style={{color:"var(--text-color)!important"}}>
                                         {post.user?.nickname ?? "Usuario eliminado"}:
@@ -341,20 +344,25 @@ function HomePage() {
                                             alt={`imagen ${currentIndex + 1}`}
                                             className="img-fluid w-100 h-100"
                                             style={{ objectFit: "cover", transition: "opacity 0.3s ease-in-out" }}
+                                            onClick={(e) => e.stopPropagation()}
                                             />
                                         )}
 
                                         {totalImages > 1 && (
                                             <>
                                             <button
-                                                onClick={() => handlePrev(post._id, totalImages)}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handlePrev(post._id, totalImages)}}
                                                 className="btn btn-light position-absolute start-0 top-50 translate-middle-y rounded-circle shadow"
                                                 style={{ opacity: 0.8, width: "40px", height: "40px" }}
                                             >
                                                 ❮
                                             </button>
                                             <button
-                                                onClick={() => handleNext(post._id, totalImages)}
+                                                onClick={(e) => {
+                                                    e.stopPropagation()
+                                                    handleNext(post._id, totalImages)}}
                                                 className="btn btn-light position-absolute end-0 top-50 translate-middle-y rounded-circle shadow"
                                                 style={{ opacity: 0.8, width: "40px", height: "40px" }}
                                             >
@@ -372,19 +380,15 @@ function HomePage() {
                                         </span>
                                         ))}
 
-                                    <div className="my-2 border-top pt-2">
+                                    <div className="my-2 border-top pt-2" >
                                         <div className="d-flex justify-content-start align-items-center">
+                                            {<p className="mb-0 opacity-50">
+                                            Me gusta
+                                            </p> /* CONFIGURAR ME GUSTAS */}  
+                                            <div className="mx-2 opacity-50">|</div>
                                             <p className="mb-0 opacity-50">
                                                 Comentarios: {post.comments?.length ?? 0}
                                             </p>
-                                            <div className="mx-2 opacity-50">|</div>
-                                            <Link
-                                                className="link-secondary link-offset-2 link-opacity-50-hover"
-                                                style={{ textDecoration: "none" }}
-                                                to={`/post/${post._id}`}
-                                            >
-                                                Ver más
-                                            </Link>
                                         </div>
                                     </div>
                                 </div>

@@ -15,20 +15,20 @@ export interface User {
 
 
 // Registrar usuario
-export const registerUser = async (userData:createUser) => {
+export const registerUser = async (userData: createUser) => {
     try {
         const response = await axiosInstance.post("/user", userData);
         return response.data;
     } catch (error: unknown) {
-        if (axios.isAxiosError(error)){
-            throw new Error(
-                error.response?.data?.message ?? "Error del servidor"
-            );
+        if (axios.isAxiosError(error)) {
+            // Joi envía 'errores', el catch del controller también.
+            // Buscamos el detalle del primer error encontrado.
+            const serverError = error.response?.data?.errores?.[0]?.detalle 
+                                || error.response?.data?.message 
+                                || "Error del servidor";
+            throw new Error(serverError);
         }
-        if (error instanceof Error){
-            throw new Error(error.message)
-        }
-        throw new Error("Error desconocido")
+        throw new Error(error instanceof Error ? error.message : "Error desconocido");
     }
 };
 

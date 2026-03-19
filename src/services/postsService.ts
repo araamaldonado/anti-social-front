@@ -4,6 +4,7 @@ import type { User } from "./userService";
 import type Comment from "./commentService"
 
 export interface Post{
+  createdAt: string | number | Date;
   _id: number;
   comments: Comment[];
   user: User | null;
